@@ -35,6 +35,20 @@ test-app: ## Runs all the tests in the application folder
 test-app-raw: ## Same as test-app but without the usage of gotestsum
 	go test -v ./application/...
 
+.PHONY: test-infra
+test-infra: ## Runs all the tests in the infrastructure folder
+	gotestsum --format testname --hide-summary output -- -v ./infrastructure/...
+
+.PHONY: test-infra-raw
+test-infra-raw: ## Same as test-infra but without the usage of gotestsum 
+	go test -v ./infrastructure/...
+
+.PHONY: test-all
+test-all: ## Runs all the tests
+	make test-domain
+	make test-app
+	make test-infra
+
 .PHONY: coverage
 coverage: ## Run all tests and generate a coverage report in HTML format
 	go test -covermode=count -coverprofile=coverage.out ./...
