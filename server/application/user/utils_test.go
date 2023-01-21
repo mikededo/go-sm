@@ -1,4 +1,4 @@
-package user
+package user_test
 
 import (
 	"github.com/mddg/go-sm/server/application"
