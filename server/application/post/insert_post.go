@@ -8,30 +8,30 @@ import (
 
 type InsertPostRequest struct {
 	Content    string `validate:"required"`
-	AuthorId   int    `validate:"required"`
+	AuthorID   int    `validate:"required"`
 	IsReshared bool
-	ResharedId int
+	ResharedID int
 	Likes      int
 	Dislikes   int
 }
 
 type InsertPostService struct {
-	repository post.PostRepository
+	repository post.Repository
 }
 
-func NewInsertPostService(repository post.PostRepository) *InsertPostService {
+func NewInsertPostService(repository post.Repository) *InsertPostService {
 	return &InsertPostService{repository}
 }
 
 func NewInsertPostRequest(
 	content string,
-	authorId, resharedId int,
+	authorID, resharedID int,
 ) InsertPostRequest {
 	return InsertPostRequest{
 		Content:    content,
-		AuthorId:   authorId,
-		IsReshared: resharedId != 0,
-		ResharedId: resharedId,
+		AuthorID:   authorID,
+		IsReshared: resharedID != 0,
+		ResharedID: resharedID,
 		Likes:      0,
 		Dislikes:   0,
 	}
@@ -44,11 +44,11 @@ func (s *InsertPostService) Run(req InsertPostRequest) (*post.Post, error) {
 	}
 
 	post := post.NewEmptyPost(
-		req.AuthorId,
+		req.AuthorID,
 		"",
 		req.Content,
 		req.IsReshared,
-		req.ResharedId,
+		req.ResharedID,
 		req.Likes,
 		req.Dislikes,
 		nil,

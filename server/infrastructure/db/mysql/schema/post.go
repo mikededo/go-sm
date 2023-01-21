@@ -8,10 +8,10 @@ import (
 type Post struct {
 	gorm.Model
 	Content      string `gorm:"content;type:varchar(250);not null"`
-	AuthorId     uint   `gorm:"author;not null"`
+	AuthorID     uint   `gorm:"author;not null"`
 	Author       User   `gorm:"foreignKey:AuthorId"`
 	IsReshared   bool   `gorm:"is_reshared;type:boolean;not null;default:0"`
-	ResharedId   *uint  `gorm:"reshared_id"`
+	ResharedID   *uint  `gorm:"reshared_id"`
 	ResharedPost *Post  `gorm:"foreignKey:ResharedId"`
 	Likes        uint   `gorm:"likes;type:int;default:0"`
 	Dislikes     uint   `gorm:"dislikes;type:int;default:0"`
@@ -22,27 +22,27 @@ func AttachPostToDatabase(db *gorm.DB) {
 }
 
 func SchemaFromPost(in post.Post) Post {
-	var resharedId *uint = nil
-	if in.ResharedId != 0 {
-		temp := uint(in.ResharedId)
-		resharedId = &temp
+	var resharedID *uint = nil
+	if in.ResharedID != 0 {
+		temp := uint(in.ResharedID)
+		resharedID = &temp
 	}
 
 	return Post{
 		Content:    in.Content,
-		AuthorId:   uint(in.Author.ID),
+		AuthorID:   uint(in.Author.ID),
 		IsReshared: in.IsReshared,
-		ResharedId: resharedId,
+		ResharedID: resharedID,
 		Likes:      uint(in.Likes),
 		Dislikes:   uint(in.Dislikes),
 	}
 }
 
 func PostFromSchema(in Post) post.Post {
-	resharedId := 0
+	resharedID := 0
 	var resharedPost post.Post
 	if in.ResharedPost != nil {
-		resharedId = int(in.ResharedPost.ID)
+		resharedID = int(in.ResharedPost.ID)
 		resharedPost = PostFromSchema(*in.ResharedPost)
 	}
 
@@ -52,7 +52,7 @@ func PostFromSchema(in Post) post.Post {
 		in.Author.Username,
 		in.Content,
 		in.IsReshared,
-		resharedId,
+		resharedID,
 		&resharedPost,
 		int(in.Likes),
 		int(in.Dislikes),

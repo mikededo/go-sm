@@ -17,7 +17,7 @@ type Post struct {
 	Author        Author
 	Content       string
 	IsReshared    bool
-	ResharedId    int
+	ResharedID    int
 	ResharedPost  *Post
 	Likes         int
 	Dislikes      int
@@ -35,20 +35,20 @@ func parseCollaborators(collaborators map[int]string) []Collaborator {
 }
 
 func NewPost(
-	id, authorId int,
+	id, authorID int,
 	authorName, content string,
 	isReshared bool,
-	resharedId int, resharedPost *Post,
+	resharedID int, resharedPost *Post,
 	likes, dislikes int,
 	collaboratorsMap map[int]string,
 	createdAt, updatedAt time.Time,
 ) Post {
 	return Post{
 		ID:            id,
-		Author:        Author{ID: authorId, Username: authorName},
+		Author:        Author{ID: authorID, Username: authorName},
 		Content:       content,
 		IsReshared:    isReshared,
-		ResharedId:    resharedId,
+		ResharedID:    resharedID,
 		ResharedPost:  resharedPost,
 		Likes:         likes,
 		Dislikes:      dislikes,
@@ -59,17 +59,17 @@ func NewPost(
 }
 
 func NewEmptyPost(
-	authorId int,
+	authorID int,
 	authorName, content string,
 	isReshared bool,
-	resharedId, likes, dislikes int,
+	resharedID, likes, dislikes int,
 	collaboratorsMap map[int]string,
 ) Post {
 	return Post{
-		Author:        Author{ID: authorId, Username: authorName},
+		Author:        Author{ID: authorID, Username: authorName},
 		Content:       content,
 		IsReshared:    isReshared,
-		ResharedId:    resharedId,
+		ResharedID:    resharedID,
 		ResharedPost:  nil,
 		Likes:         likes,
 		Dislikes:      dislikes,

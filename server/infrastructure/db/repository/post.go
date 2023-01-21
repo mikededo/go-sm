@@ -35,7 +35,7 @@ func (r *GormPostRepository) FindUserPosts(id uint, page shared.PagedRequest) ([
 	// get all posts
 	posts := []*postSchema.Post{}
 	query := r.conn.Limit(int(page.Limit)).Offset(int(page.Offset)).Joins("ResharedPost")
-	findResult := query.Find(&posts, postSchema.Post{AuthorId: id})
+	findResult := query.Find(&posts, postSchema.Post{AuthorID: id})
 	if findResult.Error != nil {
 		return nil, findResult.Error
 	}
