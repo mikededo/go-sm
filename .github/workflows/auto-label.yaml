@@ -27,13 +27,13 @@ jobs:
             echo "Added label type: docs"
             label="type: docs"
           fi
-          echo "label=$label" >> $GITHUB_OUTPUT
+          echo "label=$label" >> $GITHUB_ENV
       - name: Add label to the PR
-        if: startsWith(steps.add-label.outputs.label, 'type')
         run: |
-          echo "Adding label ${{ steps.vars.outputs.label }}"
+          echo $(cat $GITHUB_OUTPUT)
+          echo "Adding label ${{ env.label }}"
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
-          -d "{\"name\": \"${{ steps.vars.outputs.label }}\"}" \
+          -d "{\"name\": \"${{ env.label }}\"}" \
           https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels
