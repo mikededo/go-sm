@@ -1,0 +1,41 @@
+name: Auto-label PR
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Add label
+        run: |
+          title="${{ github.event.pull_request.title }}"
+          if [[ $(echo $title | grep -E '^feat') ]]; then
+            echo "Added label type: feat"
+            label="type: feat"
+          elif [[ $(echo $title | grep -E '^fix') ]]; then
+            echo "Added label type: fix"
+            label="type: fix"
+          elif [[ $(echo $title | grep -E '^chore') ]]; then
+            echo "Added label type: chore"
+            label="type: chore"
+          elif [[ $(echo $title | grep -E '^refactor') ]]; then
+            echo "Added label type: refactor"
+            label="type: refactor"
+          elif [[ $(echo $title | grep -E '^docs') ]]; then
+            echo "Added label type: docs"
+            label="type: docs"
+          fi
+          echo "label=$label" >> $GITHUB_ENV
+      - name: Add label to the PR
+        run: |
+          echo $(cat $GITHUB_OUTPUT)
+          echo "Adding label ${{ env.label }}"
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"\
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels \
+            -d '{"labels":["${{ env.label }}"]}'
