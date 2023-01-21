@@ -7,6 +7,10 @@ help: ## Display help screen
 	@echo "Commands: \n"
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: lint
+lint: ## Run the linter using golangci-lint
+	golangci-lint run ./... --out-format tab
+
 .PHONY: test
 test: ## Run all tests and print the output to the console
 	gotestsum --format pkgname --hide-summary output -- ./...
