@@ -18,7 +18,7 @@ func validateFindUserPostCalls(t *testing.T, spy *PostRepositorySpy, args FindUs
 	application.CheckPopertyEquality(t, "PageRequest.Offset", args.PageRequest.Offset, callArgs.PageRequest.Offset)
 }
 
-func validateFindUserPostsResult(t *testing.T, got, want []*post.Post) {
+func validateFindUserPostsResult(t *testing.T, got, want []*postEntity.Post) {
 	if len(got) != len(want) {
 		t.Errorf("results differ in length, got %d, want %d\n", len(got), len(want))
 		return
