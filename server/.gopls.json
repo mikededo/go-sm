@@ -1,0 +1,30 @@
+{
+  "check": {
+    "exported": true,
+    "printf": true,
+    "shadowed": true,
+    "unimported": true,
+    "uninitialized": true,
+    "unreachable": true,
+    "unused": true,
+    "unusedparams": true,
+    "unusedresult": true
+  },
+  "completeUnimported": true,
+  "experiments": [
+    "analysis.experiments.gofumpt",
+    "analysis.experiments.gofumports"
+  ],
+  "format": {
+    "commentWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false
+  },
+  "imports": {
+    "local": true,
+    "prefixes": ["github.com", "golang.org"],
+    "static": true
+  },
+  "linkTarget": "pkg.go.dev",
+  "suggestedFixes": true
+}

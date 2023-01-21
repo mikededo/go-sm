@@ -23,5 +23,8 @@ go.work
 # Database
 db-data
 
-# Other
+# Tests
+coverage
+
+# Othe
 .env
