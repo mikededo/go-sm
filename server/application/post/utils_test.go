@@ -1,4 +1,4 @@
-package post
+package post_test
 
 import (
 	"github.com/mddg/go-sm/server/application"

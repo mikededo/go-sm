@@ -1,11 +1,12 @@
-package post
+package post_test
 
 import (
 	"errors"
 	"testing"
 
 	"github.com/mddg/go-sm/server/application"
-	"github.com/mddg/go-sm/server/domain/post"
+	"github.com/mddg/go-sm/server/application/post"
+	postEntity "github.com/mddg/go-sm/server/domain/post"
 	"github.com/mddg/go-sm/server/domain/shared"
 )
 
@@ -32,20 +33,20 @@ func validateFindUserPostsResult(t *testing.T, got, want []*post.Post) {
 
 func TestFindUserPostsService_Run(t *testing.T) {
 	t.Run("return post list", func(t *testing.T) {
-		result := []*post.Post{
-			{ID: 1, Content: "Post 1 content", Author: post.Author{ID: 1, Username: "mikededo"}},
-			{ID: 2, Content: "Post 2 content", Author: post.Author{ID: 1, Username: "mikededo"}},
-			{ID: 3, Content: "Post 3 content", Author: post.Author{ID: 1, Username: "mikededo"}},
-			{ID: 4, Content: "Post 4 content", Author: post.Author{ID: 1, Username: "mikededo"}},
+		result := []*postEntity.Post{
+			{ID: 1, Content: "Post 1 content", Author: postEntity.Author{ID: 1, Username: "mikededo"}},
+			{ID: 2, Content: "Post 2 content", Author: postEntity.Author{ID: 1, Username: "mikededo"}},
+			{ID: 3, Content: "Post 3 content", Author: postEntity.Author{ID: 1, Username: "mikededo"}},
+			{ID: 4, Content: "Post 4 content", Author: postEntity.Author{ID: 1, Username: "mikededo"}},
 		}
 		spy := &PostRepositorySpy{
 			RepositorySpy: application.NewRepositoryWithResultsAndErrors(
-				[][]*post.Post{result},
+				[][]*postEntity.Post{result},
 				[]error{nil},
 			),
 		}
 
-		service := NewFindUserPostsService(spy)
+		service := post.NewFindUserPostsService(spy)
 		res, err := service.Run(1, *shared.NewPagedRequest(25))
 
 		spy.CalledOnce(t)
@@ -59,12 +60,12 @@ func TestFindUserPostsService_Run(t *testing.T) {
 	t.Run("repository error", func(t *testing.T) {
 		repositoryError := "repository error"
 		spy := &PostRepositorySpy{
-			RepositorySpy: application.NewRepositoryWithErrors[[]*post.Post](
+			RepositorySpy: application.NewRepositoryWithErrors[[]*postEntity.Post](
 				[]error{errors.New(repositoryError)},
 			),
 		}
 
-		service := NewFindUserPostsService(spy)
+		service := post.NewFindUserPostsService(spy)
 		res, err := service.Run(1, *shared.NewPagedRequest(25))
 
 		spy.CalledOnce(t)
