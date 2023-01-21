@@ -11,7 +11,11 @@ import (
 )
 
 func validateFindUserPostCalls(t *testing.T, spy *PostRepositorySpy, args FindUserPostsArguments) {
-	callArgs := spy.Calls[0].(FindUserPostsArguments)
+	callArgs, ok := spy.Calls[0].(FindUserPostsArguments)
+	if !ok {
+		t.Errorf("cannot cast to 'FindUserPostsArguments'")
+	}
+
 	application.CheckPopertyEquality(t, "ID", args.ID, callArgs.ID)
 	application.CheckPopertyEquality(t, "PageRequest.Page", args.PageRequest.Page, callArgs.PageRequest.Page)
 	application.CheckPopertyEquality(t, "PageRequest.Limit", args.PageRequest.Limit, callArgs.PageRequest.Limit)
