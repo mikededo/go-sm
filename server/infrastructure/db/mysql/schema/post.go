@@ -21,8 +21,8 @@ func AttachPostToDatabase(db *gorm.DB) {
 	db.AutoMigrate(&Post{})
 }
 
-func SchemaFromPost(in post.Post) Post {
-	var resharedID *uint = nil
+func FromPost(in post.Post) Post {
+	var resharedID *uint
 	if in.ResharedID != 0 {
 		temp := uint(in.ResharedID)
 		resharedID = &temp

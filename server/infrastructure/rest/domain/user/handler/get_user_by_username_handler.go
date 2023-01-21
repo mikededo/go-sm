@@ -35,7 +35,7 @@ func (GetUserByUsernameHandler) Handle(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "username empty or invalid format"})
 	}
 
-	conn := db.DbFactory(db.MysqlDb)
+	conn := db.Factory(db.MysqlDB)
 	r := repository.NewGormUserRepository(conn)
 
 	// find the user

@@ -11,17 +11,17 @@ import (
 	"github.com/mddg/go-sm/server/infrastructure/db/repository"
 )
 
-type PostPostJson struct {
+type PostPostJSON struct {
 	Content    string `form:"content" json:"content"`
-	AuthorId   int    `form:"author" json:"author" binding:"required"`
-	ResharedId int    `form:"reshared_id" json:"reshared_id"`
+	AuthorID   int    `form:"author" json:"author" binding:"required"`
+	ResharedID int    `form:"reshared_id" json:"reshared_id"`
 }
 
 type PostPostResponse struct {
 	ID         int       `json:"id"`
 	Content    string    `json:"content"`
 	IsReshared bool      `json:"is_reshared"`
-	ResharedId int       `json:"reshared_id"`
+	ResharedID int       `json:"reshared_id"`
 	Likes      int       `json:"likes"`
 	Dislikes   int       `json:"dislikes"`
 	CreatedAt  time.Time `json:"created_at"`
@@ -32,24 +32,24 @@ type PostPostHandler struct{}
 
 func (PostPostHandler) Handle(ctx *gin.Context) {
 	// get the data
-	var json PostPostJson
+	var json PostPostJSON
 	if err := ctx.ShouldBindJSON(&json); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	// extra validations on json received
-	if json.Content == "" && json.ResharedId == 0 {
+	if json.Content == "" && json.ResharedID == 0 {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "cannot create post with empty body if it is not reshared"})
 		return
 	}
 
 	req := services.NewInsertPostRequest(
 		json.Content,
-		json.AuthorId,
-		json.ResharedId,
+		json.AuthorID,
+		json.ResharedID,
 	)
-	conn := db.DbFactory(db.MysqlDb)
+	conn := db.Factory(db.MysqlDB)
 	r := repository.NewGormPostRepository(conn)
 
 	res, err := services.NewInsertPostService(r).Run(req)

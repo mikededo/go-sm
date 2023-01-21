@@ -17,7 +17,7 @@ func NewGormPostRepository(conn *gorm.DB) *GormPostRepository {
 
 func (r *GormPostRepository) InsertPost(p post.Post) (*post.Post, error) {
 	// convert post into schema
-	schema := postSchema.SchemaFromPost(p)
+	schema := postSchema.FromPost(p)
 	// save the schema
 	res := r.conn.Create(&schema)
 

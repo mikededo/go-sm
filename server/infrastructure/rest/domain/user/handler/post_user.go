@@ -9,7 +9,7 @@ import (
 	"github.com/mddg/go-sm/server/infrastructure/db/repository"
 )
 
-type PostUserJson struct {
+type PostUserJSON struct {
 	FirstName string `form:"firstName" json:"firstName" binding:"required"`
 	LastName  string `form:"lastName" json:"lastName" binding:"required"`
 	Username  string `form:"username" json:"username" binding:"required"`
@@ -21,7 +21,7 @@ type PostUserHandler struct{}
 
 func (PostUserHandler) Handle(ctx *gin.Context) {
 	// get the data
-	var json PostUserJson
+	var json PostUserJSON
 	if err := ctx.ShouldBindJSON(&json); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -34,7 +34,7 @@ func (PostUserHandler) Handle(ctx *gin.Context) {
 		json.Email,
 		json.Password,
 	)
-	conn := db.DbFactory(db.MysqlDb)
+	conn := db.Factory(db.MysqlDB)
 	r := repository.NewGormUserRepository(conn)
 
 	if err := services.NewInsertUserService(r).Run(req); err != nil {

@@ -2,14 +2,14 @@ package user
 
 import "github.com/mddg/go-sm/server/domain/user"
 
-type FindUserByIdService struct {
+type FindUserByIDService struct {
 	repository user.Repository
 }
 
-func NewFindUserByIdService(repository user.Repository) *FindUserByIdService {
-	return &FindUserByIdService{repository}
+func NewFindUserByIDService(repository user.Repository) *FindUserByIDService {
+	return &FindUserByIDService{repository}
 }
 
-func (s *FindUserByIdService) Run(id int) (*user.User, error) {
-	return s.repository.FindUserById(id)
+func (s *FindUserByIDService) Run(id int) (*user.User, error) {
+	return s.repository.FindUserByID(id)
 }

@@ -23,7 +23,7 @@ func TestFindUserByIdService_Run(t *testing.T) {
 			RepositorySpy: application.NewRepositoryWithResults([]*userEntity.User{u}),
 		}
 
-		service := user.NewFindUserByIdService(spy)
+		service := user.NewFindUserByIDService(spy)
 		res, err := service.Run(1)
 
 		validateFindByUserIDCalls(t, spy)
@@ -40,7 +40,7 @@ func TestFindUserByIdService_Run(t *testing.T) {
 			RepositorySpy: application.NewRepositoryWithErrors[*userEntity.User]([]error{fmt.Errorf("user not found")}),
 		}
 
-		service := user.NewFindUserByIdService(spy)
+		service := user.NewFindUserByIDService(spy)
 		res, err := service.Run(1)
 
 		validateFindByUserIDCalls(t, spy)
