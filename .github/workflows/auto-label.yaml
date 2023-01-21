@@ -1,0 +1,40 @@
+name: Auto-label PR
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get PR title
+        run: echo "::set-output name=title::$(jq '.pull_request.title' ${{ toJson(github) }})""
+      - name: Add label
+        run: |
+          if [[ $(echo ${{ steps.get-pr-title.outputs.title }} | grep -E '^feat') ]]; then
+            echo "Adding label type: feat"
+            label="type: feat"
+          elif [[ $(echo ${{ steps.get-pr-title.outputs.title }} | grep -E '^fix') ]]; then
+            echo "Adding label type: fix"
+            label="type: fix"
+          elif [[ $(echo ${{ steps.get-pr-title.outputs.title }} | grep -E '^chore') ]]; then
+            echo "Adding label type: chore"
+            label="type: chore"
+          elif [[ $(echo ${{ steps.get-pr-title.outputs.title }} | grep -E '^refactor') ]]; then
+            echo "Adding label type: refactor"
+            label="type: refactor"
+          elif [[ $(echo ${{ steps.get-pr-title.outputs.title }} | grep -E '^docs') ]]; then
+            echo "Adding label type: docs"
+            label="type: docs"
+          fi
+        if: steps.get-pr-title.outputs.title != ''
+      - name: Add label to the PR
+        if: startsWith(steps.add-label.outputs.label, 'type')
+        run: |
+          echo "Adding label ${{ steps.add-label.outputs.label }}"
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          -d "{\"name\": \"${{ steps.add-label.outputs.label }}\"}" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels
