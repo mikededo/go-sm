@@ -1,7 +1,7 @@
 name: Auto-label PR
 on:
   pull_request:
-    types: [opened, edited, synchronize]
+    types: [opened, synchronize]
 jobs:
   add-label:
     runs-on: ubuntu-latest
