@@ -1,8 +1,5 @@
 name: Server CI
 on:
-  push:
-    branches:
-      - main
   pull_request_target:
     paths:
       - "server/**"
@@ -23,12 +20,30 @@ jobs:
       - name: Run domain tests
         run: |
           cd server
-          git diff --name-only HEAD~1 | grep 'server/domain' && make test-domain || echo "No tests to run"
+          CHANGED=$(git diff --name-only ${{ github.event.workflow_run.head_sha }} | grep -q 'domain')
+          if [ -n $CHANGED ]; then
+            echo "Found changes in domain layer"
+            make test-domain
+          else
+            echo "No test found in domain layer"
+          fi
       - name: Run application tests
         run: |
           cd server
-          git diff --name-only HEAD~1 | grep -q 'server/application' && make test-app || echo "No tests to run"
+          CHANGED=$(git diff --name-only ${{ github.event.workflow_run.head_sha }} | grep -q 'application')
+          if [ -n $CHANGED ]; then
+            echo "Found changes in application layer"
+            make test-app
+          else
+            echo "No test found in application layer"
+          fi
       - name: Run infrastructure tests
         run: |
           cd server
-          git diff --name-only HEAD~1 | grep -q 'server/infrastructure' && make test-infra || echo "No tests to run"
+          CHANGED=$(git diff --name-only ${{ github.event.workflow_run.head_sha }} | grep -q 'infrastructure')
+          if [ -n $CHANGED ]; then
+            echo "Found changes in infrastructure layer"
+            make test-infra
+          else
+            echo "No test found in infrastructure layer"
+          fi
