@@ -12,6 +12,7 @@ type Collaborator struct {
 	Username string
 }
 
+// Test comment
 type Post struct {
 	ID            int
 	Author        Author
