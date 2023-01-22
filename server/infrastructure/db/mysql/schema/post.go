@@ -18,7 +18,10 @@ type Post struct {
 }
 
 func AttachPostToDatabase(db *gorm.DB) {
-	db.AutoMigrate(&Post{})
+	err := db.AutoMigrate(&Post{})
+	if err != nil {
+		panic("unable to auto migrate Post entity")
+	}
 }
 
 func FromPost(in post.Post) Post {

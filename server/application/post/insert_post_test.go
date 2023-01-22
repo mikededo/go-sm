@@ -14,7 +14,11 @@ var resharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is
 var notResharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is a test post", false, 0, nil, 0, 0, nil, time.Now(), time.Now())
 
 func validateInsertPostCalls(t *testing.T, s *PostRepositorySpy, req post.InsertPostRequest) {
-	arg := s.Calls[0].(postEntity.Post)
+	arg, ok := s.Calls[0].(postEntity.Post)
+	if !ok {
+		t.Errorf("cannot cast to 'Post'")
+	}
+
 	application.CheckPopertyEquality(t, "Content", arg.Content, req.Content)
 	application.CheckPopertyEquality(t, "Author.ID", arg.Author.ID, req.AuthorID)
 	application.CheckPopertyEquality(t, "Author.Username", arg.Author.Username, "")

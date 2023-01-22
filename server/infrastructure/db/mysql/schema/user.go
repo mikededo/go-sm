@@ -20,7 +20,10 @@ type User struct {
 }
 
 func AttachUserToDatabase(db *gorm.DB) {
-	db.AutoMigrate(&User{})
+	err := db.AutoMigrate(&User{})
+	if err != nil {
+		panic("unable to auto migrate User entity")
+	}
 }
 
 func FromUser(in user.User) User {
