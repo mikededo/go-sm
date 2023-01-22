@@ -10,8 +10,10 @@ import (
 	postEntity "github.com/mddg/go-sm/server/domain/post"
 )
 
-var resharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is a test post", true, 1, nil, 0, 0, nil, time.Now(), time.Now())
-var notResharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is a test post", false, 0, nil, 0, 0, nil, time.Now(), time.Now())
+var resharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is a test post",
+	true, 1, nil, 0, 0, nil, time.Now(), time.Now())
+var notResharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is a test post",
+	false, 0, nil, 0, 0, nil, time.Now(), time.Now())
 
 func validateInsertPostCalls(t *testing.T, s *PostRepositorySpy, req post.InsertPostRequest) {
 	arg, ok := s.Calls[0].(postEntity.Post)
