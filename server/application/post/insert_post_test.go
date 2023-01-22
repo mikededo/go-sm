@@ -114,7 +114,7 @@ func TestInsertPostService(t *testing.T) {
 		if res != nil {
 			t.Error("expected error, got nil\n")
 		}
-		if err != application.ErrInvalidRequest {
+		if !errors.Is(err, application.ErrInvalidRequest) {
 			t.Errorf("got %s as error, wanted %s\n", err.Error(), application.ErrInvalidRequest.Error())
 		}
 	})
