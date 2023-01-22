@@ -5,15 +5,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type DbType int64
+type Type int64
 
 const (
-	MysqlDb DbType = iota
+	MysqlDB Type = iota
 )
 
-func DbFactory(db DbType) *gorm.DB {
+func Factory(db Type) *gorm.DB {
 	switch db {
-	case MysqlDb:
+	case MysqlDB:
 		return mysql.Connection()
 	}
 

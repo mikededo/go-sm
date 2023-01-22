@@ -3,10 +3,10 @@ package user
 import "github.com/mddg/go-sm/server/domain/user"
 
 type FindUserByUsernameService struct {
-	repository user.UserRepository
+	repository user.Repository
 }
 
-func NewFindUserByUsernameService(repository user.UserRepository) *FindUserByUsernameService {
+func NewFindUserByUsernameService(repository user.Repository) *FindUserByUsernameService {
 	return &FindUserByUsernameService{repository}
 }
 

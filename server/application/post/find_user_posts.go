@@ -6,10 +6,10 @@ import (
 )
 
 type FindUserPostsService struct {
-	repository post.PostRepository
+	repository post.Repository
 }
 
-func NewFindUserPostsService(repository post.PostRepository) *FindUserPostsService {
+func NewFindUserPostsService(repository post.Repository) *FindUserPostsService {
 	return &FindUserPostsService{repository}
 }
 

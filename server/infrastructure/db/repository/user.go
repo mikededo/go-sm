@@ -14,7 +14,7 @@ func NewGormUserRepository(conn *gorm.DB) *GormUserRepository {
 	return &GormUserRepository{conn}
 }
 
-func (r *GormUserRepository) FindUserById(int) (*user.User, error) {
+func (r *GormUserRepository) FindUserByID(int) (*user.User, error) {
 	return nil, nil
 }
 
@@ -33,7 +33,7 @@ func (r *GormUserRepository) FindUserByUsername(username string) (*user.User, er
 
 func (r *GormUserRepository) InsertUser(u user.User) error {
 	// convert user into schema
-	schema := userSchema.SchemaFromUser(u)
+	schema := userSchema.FromUser(u)
 	// save the schema
 	res := r.conn.Save(&schema)
 	// return err or nil

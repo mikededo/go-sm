@@ -8,19 +8,19 @@ type RepositorySpy[T any] struct {
 	Errors  []error
 }
 
-func (u *RepositorySpy[T]) Error() error {
-	if len(u.Errors) > 0 {
-		err := u.Errors[0]
-		u.Errors = u.Errors[1:]
+func (spy *RepositorySpy[T]) Error() error {
+	if len(spy.Errors) > 0 {
+		err := spy.Errors[0]
+		spy.Errors = spy.Errors[1:]
 		return err
 	}
 	return nil
 }
 
-func (u *RepositorySpy[T]) Result() T {
-	if len(u.Results) > 0 {
-		res := u.Results[0]
-		u.Results = u.Results[1:]
+func (spy *RepositorySpy[T]) Result() T {
+	if len(spy.Results) > 0 {
+		res := spy.Results[0]
+		spy.Results = spy.Results[1:]
 		return res
 	}
 

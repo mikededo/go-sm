@@ -1,11 +1,12 @@
-package user
+package user_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/mddg/go-sm/server/application"
-	"github.com/mddg/go-sm/server/domain/user"
+	"github.com/mddg/go-sm/server/application/user"
+	userEntity "github.com/mddg/go-sm/server/domain/user"
 )
 
 func validateFindByUserUsernameCalls(t *testing.T, s *UserRepositorySpy) {
@@ -17,12 +18,12 @@ func validateFindByUserUsernameCalls(t *testing.T, s *UserRepositorySpy) {
 
 func TestFindUserByUsernameService_Run(t *testing.T) {
 	t.Run("user found", func(t *testing.T) {
-		u := &user.User{ID: 1, Username: "mikededo"}
+		u := &userEntity.User{ID: 1, Username: "mikededo"}
 		spy := &UserRepositorySpy{
-			RepositorySpy: application.NewRepositoryWithResults([]*user.User{u}),
+			RepositorySpy: application.NewRepositoryWithResults([]*userEntity.User{u}),
 		}
 
-		service := NewFindUserByUsernameService(spy)
+		service := user.NewFindUserByUsernameService(spy)
 		res, err := service.Run("mikededo")
 
 		validateFindByUserUsernameCalls(t, spy)
@@ -36,10 +37,10 @@ func TestFindUserByUsernameService_Run(t *testing.T) {
 
 	t.Run("user not found", func(t *testing.T) {
 		spy := &UserRepositorySpy{
-			RepositorySpy: application.NewRepositoryWithErrors[*user.User]([]error{fmt.Errorf("user not found")}),
+			RepositorySpy: application.NewRepositoryWithErrors[*userEntity.User]([]error{fmt.Errorf("user not found")}),
 		}
 
-		service := NewFindUserByUsernameService(spy)
+		service := user.NewFindUserByUsernameService(spy)
 		res, err := service.Run("mikededo")
 
 		validateFindByUserUsernameCalls(t, spy)

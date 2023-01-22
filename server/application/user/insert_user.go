@@ -16,10 +16,10 @@ type InsertUserRequest struct {
 }
 
 type InsertUserService struct {
-	repository user.UserRepository
+	repository user.Repository
 }
 
-func NewInsertUserService(repository user.UserRepository) *InsertUserService {
+func NewInsertUserService(repository user.Repository) *InsertUserService {
 	return &InsertUserService{repository}
 }
 

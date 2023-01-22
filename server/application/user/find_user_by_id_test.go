@@ -1,14 +1,15 @@
-package user
+package user_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/mddg/go-sm/server/application"
-	"github.com/mddg/go-sm/server/domain/user"
+	"github.com/mddg/go-sm/server/application/user"
+	userEntity "github.com/mddg/go-sm/server/domain/user"
 )
 
-func validateFindByUserIdCalls(t *testing.T, s *UserRepositorySpy) {
+func validateFindByUserIDCalls(t *testing.T, s *UserRepositorySpy) {
 	s.CalledOnce(t)
 	if s.Calls[0] != 1 {
 		t.Errorf("repository expected to be called with %d received %d\n", 1, s.Calls[0])
@@ -17,15 +18,15 @@ func validateFindByUserIdCalls(t *testing.T, s *UserRepositorySpy) {
 
 func TestFindUserByIdService_Run(t *testing.T) {
 	t.Run("user found", func(t *testing.T) {
-		u := &user.User{ID: 1, Username: "mikededo"}
+		u := &userEntity.User{ID: 1, Username: "mikededo"}
 		spy := &UserRepositorySpy{
-			RepositorySpy: application.NewRepositoryWithResults([]*user.User{u}),
+			RepositorySpy: application.NewRepositoryWithResults([]*userEntity.User{u}),
 		}
 
-		service := NewFindUserByIdService(spy)
+		service := user.NewFindUserByIDService(spy)
 		res, err := service.Run(1)
 
-		validateFindByUserIdCalls(t, spy)
+		validateFindByUserIDCalls(t, spy)
 		if err != nil {
 			t.Errorf("error was not expected, got %v\n", err)
 		}
@@ -36,13 +37,13 @@ func TestFindUserByIdService_Run(t *testing.T) {
 
 	t.Run("user not found", func(t *testing.T) {
 		spy := &UserRepositorySpy{
-			RepositorySpy: application.NewRepositoryWithErrors[*user.User]([]error{fmt.Errorf("user not found")}),
+			RepositorySpy: application.NewRepositoryWithErrors[*userEntity.User]([]error{fmt.Errorf("user not found")}),
 		}
 
-		service := NewFindUserByIdService(spy)
+		service := user.NewFindUserByIDService(spy)
 		res, err := service.Run(1)
 
-		validateFindByUserIdCalls(t, spy)
+		validateFindByUserIDCalls(t, spy)
 		if err == nil {
 			t.Errorf("expecting error got %v\n", err)
 		}

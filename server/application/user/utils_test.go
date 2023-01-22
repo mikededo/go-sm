@@ -1,4 +1,4 @@
-package user
+package user_test
 
 import (
 	"github.com/mddg/go-sm/server/application"
@@ -9,7 +9,7 @@ type UserRepositorySpy struct {
 	application.RepositorySpy[*user.User]
 }
 
-func (spy *UserRepositorySpy) FindUserById(id int) (*user.User, error) {
+func (spy *UserRepositorySpy) FindUserByID(id int) (*user.User, error) {
 	spy.Calls = append(spy.Calls, id)
 	return spy.Result(), spy.Error()
 }

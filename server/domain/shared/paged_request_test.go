@@ -1,8 +1,12 @@
-package shared
+package shared_test
 
-import "testing"
+import (
+	"testing"
 
-func validatePagedRequestProperties(t *testing.T, got *PagedRequest, page, offset, limit uint) {
+	"github.com/mddg/go-sm/server/domain/shared"
+)
+
+func validatePagedRequestProperties(t *testing.T, got *shared.PagedRequest, page, offset, limit uint) {
 	if got.Page != page {
 		t.Errorf("wanted %d page, got %d\n", got.Page, page)
 	}
@@ -16,13 +20,13 @@ func validatePagedRequestProperties(t *testing.T, got *PagedRequest, page, offse
 
 func TestPageRequest(t *testing.T) {
 	t.Run("create new page", func(t *testing.T) {
-		validatePagedRequestProperties(t, NewPagedRequest(25), 1, 0, 25)
+		validatePagedRequestProperties(t, shared.NewPagedRequest(25), 1, 0, 25)
 	})
 }
 
 func TestPageRequest_NextPage(t *testing.T) {
 	t.Run("increase to next page", func(t *testing.T) {
-		p := NewPagedRequest(25)
+		p := shared.NewPagedRequest(25)
 		p.NextPage()
 		validatePagedRequestProperties(t, p, 2, 25, 25)
 		p.NextPage()

@@ -1,8 +1,8 @@
 package user
 
-type UserRepository interface {
-	// FindUserById returns a User given it's id or returns nil if not found
-	FindUserById(int) (*User, error)
+type Repository interface {
+	// FindUserByID returns a User given it's id or returns nil if not found
+	FindUserByID(int) (*User, error)
 
 	// FindUserByUsername returns a User given it's username or returns nil if not found
 	FindUserByUsername(string) (*User, error)

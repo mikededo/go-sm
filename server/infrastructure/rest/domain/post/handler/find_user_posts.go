@@ -17,9 +17,9 @@ import (
 type FindUserPostsResponse struct {
 	ID           int                    `json:"id"`
 	Content      string                 `json:"content"`
-	AuthorId     int                    `json:"author_id"`
+	AuthorID     int                    `json:"author_id"`
 	IsReshared   bool                   `json:"is_reshared"`
-	ResharedId   int                    `json:"reshared_id"`
+	ResharedID   int                    `json:"reshared_id"`
 	ResharedPost *FindUserPostsResponse `json:"reshared_post,omitempty"`
 	Likes        int                    `json:"likes"`
 	Dislikes     int                    `json:"dislikes"`
@@ -32,19 +32,19 @@ type GetUserPostsHandler struct{}
 func (GetUserPostsHandler) Handle(ctx *gin.Context) {
 	// get the param
 	param := ctx.Param("user_id")
-	userId, err := strconv.Atoi(param)
+	userID, err := strconv.Atoi(param)
 	re := regexp.MustCompile("^[0-9]+$")
 	if err != nil && re.MatchString(param) {
 		// invalid param
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user id empty or invalid format"})
 	}
 
-	conn := db.DbFactory(db.MysqlDb)
+	conn := db.Factory(db.MysqlDB)
 	r := repository.NewGormPostRepository(conn)
 
 	// find the posts
 	page := shared.NewPagedRequest(25)
-	posts, err := services.NewFindUserPostsService(r).Run(uint(userId), *page)
+	posts, err := services.NewFindUserPostsService(r).Run(uint(userID), *page)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

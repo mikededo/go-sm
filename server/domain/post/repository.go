@@ -2,7 +2,7 @@ package post
 
 import "github.com/mddg/go-sm/server/domain/shared"
 
-type PostRepository interface {
+type Repository interface {
 	// InsertPost saves a new Post
 	InsertPost(Post) (*Post, error)
 

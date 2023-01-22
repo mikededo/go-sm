@@ -1,8 +1,10 @@
-package util
+package util_test
 
 import (
 	"testing"
 	"time"
+
+	"github.com/mddg/go-sm/server/domain/util"
 )
 
 func checkEqualProps(t *testing.T, prop string, valIn, valOut interface{}) {
@@ -26,7 +28,7 @@ func TestMergeStructs(t *testing.T) {
 		}
 
 		in, out := S{A: 1, B: "struct", C: time.Now()}, S{}
-		MergeStructs(in, &out)
+		util.MergeStructs(in, &out)
 		checkEqualProps(t, "A", in.A, out.A)
 		checkEqualProps(t, "B", in.B, out.B)
 		checkEqualProps(t, "C", in.C, out.C)
@@ -44,7 +46,7 @@ func TestMergeStructs(t *testing.T) {
 		}
 
 		in, out := S{A: 1, B: "struct"}, P{}
-		MergeStructs(in, &out)
+		util.MergeStructs(in, &out)
 		checkEqualProps(t, "A", in.A, out.A)
 		checkUnmodifiedProp(t, "C", out.C, "")
 		checkUnmodifiedProp(t, "D", out.D, (*S)(nil))
@@ -61,7 +63,7 @@ func TestMergeStructs(t *testing.T) {
 		}
 
 		in, out := S{A: 1, B: "struct"}, P{}
-		MergeStructs(in, &out)
+		util.MergeStructs(in, &out)
 		checkUnmodifiedProp(t, "C", out.C, "")
 		checkUnmodifiedProp(t, "D", out.D, (*S)(nil))
 	})

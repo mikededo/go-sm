@@ -15,15 +15,18 @@ type User struct {
 	Email       string    `gorm:"email;type:varchar(255);unique;not null"`
 	Password    string    `gorm:"password;type:varchar(255);not null"`
 	Description string    `gorm:"description;type:text"`
-	WebsiteUrl  string    `gorm:"website_url;type:varchar(255)"`
+	WebsiteURL  string    `gorm:"website_url;type:varchar(255)"`
 	BirthDate   time.Time `gorm:"birth_date;default:null"`
 }
 
 func AttachUserToDatabase(db *gorm.DB) {
-	db.AutoMigrate(&User{})
+	err := db.AutoMigrate(&User{})
+	if err != nil {
+		panic("unable to auto migrate User entity")
+	}
 }
 
-func SchemaFromUser(in user.User) User {
+func FromUser(in user.User) User {
 	return User{
 		FirstName: in.FirstName,
 		LastName:  in.LastName,
@@ -41,7 +44,7 @@ func UserFromSchema(in User) user.User {
 		in.Username,
 		in.Email,
 		in.Description,
-		in.WebsiteUrl,
+		in.WebsiteURL,
 		in.BirthDate,
 		in.CreatedAt,
 	)
