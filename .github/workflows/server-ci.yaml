@@ -22,7 +22,6 @@ jobs:
         with:
           version: v1.29
           working-directory: server
-          args: --out-format tab
   tests:
     runs-on: ubuntu-latest
     strategy:
