@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/mddg/go-sm/server/domain/user"
 	userSchema "github.com/mddg/go-sm/server/infrastructure/db/mysql/schema"
 	"gorm.io/gorm"
@@ -15,7 +17,7 @@ func NewGormUserRepository(conn *gorm.DB) *GormUserRepository {
 }
 
 func (r *GormUserRepository) FindUserByID(int) (*user.User, error) {
-	return nil, nil
+	return nil, errors.New("not implemented")
 }
 
 func (r *GormUserRepository) FindUserByUsername(username string) (*user.User, error) {

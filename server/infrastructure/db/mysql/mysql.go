@@ -20,14 +20,15 @@ func Connection() *gorm.DB {
 	}
 
 	dsn := "root:test-db@tcp(127.0.0.1:3306)/go-sm-db?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	_db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect to go-sm-db database")
 	}
 
 	// Add schemas
-	schema.AttachUserToDatabase(db)
-	schema.AttachPostToDatabase(db)
+	schema.AttachUserToDatabase(_db)
+	schema.AttachPostToDatabase(_db)
+	db = _db
 
-	return db
+	return _db
 }
