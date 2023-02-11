@@ -8,6 +8,7 @@ import (
 	"github.com/mddg/go-sm/server/application"
 	"github.com/mddg/go-sm/server/application/post"
 	postEntity "github.com/mddg/go-sm/server/domain/post"
+	"github.com/stretchr/testify/assert"
 )
 
 var resharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This is a test post",
@@ -17,9 +18,7 @@ var notResharedPost postEntity.Post = postEntity.NewPost(1, 1, "mikededo", "This
 
 func validateInsertPostCalls(t *testing.T, s *PostRepositorySpy, req post.InsertPostRequest) {
 	arg, ok := s.Calls[0].(postEntity.Post)
-	if !ok {
-		t.Errorf("cannot cast to 'Post'")
-	}
+	assert.True(t, ok, "cannot cast to 'Post'")
 
 	application.CheckPopertyEquality(t, "Content", arg.Content, req.Content)
 	application.CheckPopertyEquality(t, "Author.ID", arg.Author.ID, req.AuthorID)
@@ -57,9 +56,7 @@ func TestInsertPostService(t *testing.T) {
 		res, err := services.Run(req)
 
 		spy.CalledOnce(t)
-		if err != nil {
-			t.Errorf("not expecting error, got %v\n", res)
-		}
+		assert.Nil(t, err, "not expecting error, got %v\n", res)
 		validateInsertPostCalls(t, spy, req)
 		validateInsertResult(t, &resharedPost, res)
 	})
@@ -77,9 +74,7 @@ func TestInsertPostService(t *testing.T) {
 		res, err := services.Run(req)
 
 		spy.CalledOnce(t)
-		if err != nil {
-			t.Errorf("not expecting error, got %v\n", res)
-		}
+		assert.Nil(t, err, "not expecting error, got %v\n", res)
 		validateInsertPostCalls(t, spy, req)
 		validateInsertResult(t, &notResharedPost, res)
 	})
@@ -94,12 +89,8 @@ func TestInsertPostService(t *testing.T) {
 		res, err := service.Run(post.NewInsertPostRequest("This is a test post", 1, 0))
 
 		spy.CalledOnce(t)
-		if res != nil {
-			t.Error("expected error, got nil\n")
-		}
-		if err.Error() != repositoryError {
-			t.Errorf("got %s as error, wanted %s\n", err.Error(), repositoryError)
-		}
+		assert.Nil(t, res, "no return value should exist, got %v\n", res)
+		assert.Equal(t, repositoryError, err.Error(), "got %s as error, wanted %s\n", err.Error(), repositoryError)
 	})
 
 	t.Run("invalid post request", func(t *testing.T) {
@@ -111,11 +102,8 @@ func TestInsertPostService(t *testing.T) {
 		res, err := service.Run(post.NewInsertPostRequest("This is a test post", 1, 0))
 
 		spy.CalledOnce(t)
-		if res != nil {
-			t.Error("expected error, got nil\n")
-		}
-		if !errors.Is(err, application.ErrInvalidRequest) {
-			t.Errorf("got %s as error, wanted %s\n", err.Error(), application.ErrInvalidRequest.Error())
-		}
+		assert.Nil(t, res, "no return value should exist, got %v\n", res)
+		assert.ErrorIs(t, err, application.ErrInvalidRequest,
+			"got %s as error, wanted %s\n", err.Error(), application.ErrInvalidRequest.Error())
 	})
 }
