@@ -1,6 +1,10 @@
 package application
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 type RepositorySpy[T any] struct {
 	Calls   []interface{}
@@ -55,7 +59,5 @@ func NewRepositoryWithResultsAndErrors[T any](results []T, errs []error) Reposit
 func CheckPopertyEquality(
 	t *testing.T, prop string, entProp, reqProp interface{},
 ) {
-	if entProp != reqProp {
-		t.Errorf("%s differs, wanted %v, got %v\n", prop, entProp, reqProp)
-	}
+	assert.Equal(t, entProp, reqProp, "%s differs, wanted %v, got %v\n", prop, entProp, reqProp)
 }

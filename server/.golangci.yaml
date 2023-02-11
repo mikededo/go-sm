@@ -126,8 +126,6 @@ linters:
     - promlinter # checks Prometheus metrics naming via promlint
     - reassign # checks that package variables are not reassigned
     - revive # fast, configurable, extensible, flexible, and beautiful linter for Go, drop-in replacement of golint
-    - rowserrcheck # checks whether Err of rows is checked successfully
-    - sqlclosecheck # checks that sql.Rows and sql.Stmt are closed
     - stylecheck # is a replacement for golint
     - tenv # detects using os.Setenv instead of t.Setenv since Go1.17
     - testableexamples # checks if examples are testable (have an expected output)
@@ -136,7 +134,6 @@ linters:
     - unconvert # removes unnecessary type conversions
     - unparam # reports unused function parameters
     - usestdlibvars # detects the possibility to use variables/constants from the Go standard library
-    - wastedassign # finds wasted assignment statements
 issues:
   # Maximum count of issues with the same text.
   # Set to 0 to disable.

@@ -14,6 +14,10 @@ import (
 	"github.com/mddg/go-sm/server/infrastructure/db/repository"
 )
 
+const (
+	DefaultPageSize = 25
+)
+
 type FindUserPostsResponse struct {
 	ID           int                    `json:"id"`
 	Content      string                 `json:"content"`
@@ -43,7 +47,7 @@ func (GetUserPostsHandler) Handle(ctx *gin.Context) {
 	r := repository.NewGormPostRepository(conn)
 
 	// find the posts
-	page := shared.NewPagedRequest(25)
+	page := shared.NewPagedRequest(DefaultPageSize)
 	posts, err := services.NewFindUserPostsService(r).Run(uint(userID), *page)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

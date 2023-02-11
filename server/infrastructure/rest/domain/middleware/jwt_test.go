@@ -24,13 +24,6 @@ var invalidToken = strings.Join([]string{
 	"wibmJmIjoxNjc1NDQ4MTEzLCJpYXQiOjE2NzU0NDgxMTMsImp0aSI6IjEifQ",
 	".cNsRmXP-WiV9X9R9LVGJMeFjEVRM9fwnmQZBAw-pWlY",
 }, "")
-var invalidClaimsToken = strings.Join([]string{
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.",
-	"eyJpc3MiOiJodHRwczovL2dvLXNtLmNvbSIsImV4cCI6NDk0ODM0ODA1Niwib",
-	"mJmIjoxNjc1NjI0MDU2LCJpYXQiOjE2NzU2MjQwNTYsImp0aSI6IjEiLCJyYW",
-	"5kb21fa2V5IjoicmFuZG9tX3ZhbHVlIn0",
-	".pWNjy_kYAgl69U6I9OjSDkXcZ5H32TedG2yuR44hmdE",
-}, "")
 
 func setupRouter(t *testing.T) *gin.Engine {
 	t.Setenv(shared.JwtSigningKey, shared.TestJwtSignValue)

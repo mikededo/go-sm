@@ -15,7 +15,7 @@ func Factory(db Type) *gorm.DB {
 	switch db {
 	case MysqlDB:
 		return mysql.Connection()
+	default:
+		return nil
 	}
-
-	return nil
 }
