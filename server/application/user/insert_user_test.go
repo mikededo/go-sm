@@ -7,15 +7,13 @@ import (
 	"github.com/mddg/go-sm/server/application"
 	"github.com/mddg/go-sm/server/application/user"
 	userEntity "github.com/mddg/go-sm/server/domain/user"
+	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func validateInsertUserCalls(t *testing.T, s *UserRepositorySpy, req user.InsertUserRequest) {
 	arg, ok := s.Calls[0].(userEntity.User)
-	if !ok {
-		t.Error("cannot cast to 'userEntity.User'")
-	}
-
+	assert.True(t, ok, "cannot cast to 'userEntity.User'")
 	application.CheckPopertyEquality(t, "FirstName", arg.FirstName, req.FirstName)
 	application.CheckPopertyEquality(t, "LastName", arg.LastName, req.LastName)
 	application.CheckPopertyEquality(t, "Username", arg.Username, req.Username)
@@ -33,16 +31,12 @@ func TestInsertUserService_Run(t *testing.T) {
 		res := service.Run(req)
 
 		spy.CalledOnce(t)
-		if res != nil {
-			t.Errorf("not expecting error, got %v\n", res)
-		}
+		assert.Nil(t, res, "not expecting error, got %v\n", res)
 		validateInsertUserCalls(t, spy, req)
 
 		resPassword := spy.Calls[0].(userEntity.User).Password
 		err := bcrypt.CompareHashAndPassword([]byte(resPassword), []byte("password"))
-		if err != nil {
-			t.Errorf("expected password to be hashed, got %s\n", resPassword)
-		}
+		assert.Nil(t, err, "expected password to be hashed, got %s\n", resPassword)
 	})
 
 	t.Run("repository error thrown", func(t *testing.T) {
@@ -56,12 +50,8 @@ func TestInsertUserService_Run(t *testing.T) {
 			user.NewInsertUserRequest("Mike", "Dedo", "mikededo", "mike@dedo.com", "password"),
 		)
 
-		if err == nil {
-			t.Error("expected error, got nil\n")
-		}
-		if err.Error() != repositoryError {
-			t.Errorf("got %s as error, wanted %s\n", err.Error(), repositoryError)
-		}
+		assert.NotNil(t, err, "expected error, got nil\n")
+		assert.Equal(t, repositoryError, err.Error(), "got %s as error, wanted %s\n", err.Error(), repositoryError)
 	})
 
 	t.Run("invalid user request", func(t *testing.T) {
@@ -72,11 +62,8 @@ func TestInsertUserService_Run(t *testing.T) {
 		service := user.NewInsertUserService(spy)
 		err := service.Run(user.InsertUserRequest{})
 
-		if err == nil {
-			t.Error("expected error, got nil\n")
-		}
-		if !errors.Is(err, application.ErrInvalidRequest) {
-			t.Errorf("got '%v' error, wanted '%v'\n", err, application.ErrInvalidRequest)
-		}
+		assert.NotNil(t, err, "expected error, got nil\n")
+		assert.False(t, !errors.Is(err, application.ErrInvalidRequest),
+			"got '%v' error, wanted '%v'\n", err, application.ErrInvalidRequest)
 	})
 }
